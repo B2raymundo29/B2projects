@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>So...When Are We Going?</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    font-family: 'Georgia', 'Segoe UI', serif;
+    background: linear-gradient(135deg, #ffd6e8 0%, #e6d6ff 50%, #d6e9ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #6b4a6b;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 24px;
+    padding: 40px 30px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(180, 120, 180, 0.25);
+    animation: fadeIn 1s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 { text-align: center; color: #d6336c; margin-bottom: 20px; }
+
+  label { display: block; margin: 15px 0 5px; font-weight: bold; color: #a04a7a; }
+
+  input[type="date"], input[type="time"], input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ffd6e8;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1rem;
+    background: #fff;
+    color: #6b4a6b;
+  }
+  input:focus { outline: none; border-color: #ff8fb3; }
+
+  .meal-options { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .meal-options label {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+    background: #f3e8ff;
+    border-radius: 50px;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: normal;
+    margin: 0;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .meal-options input { display: none; }
+  .meal-options input:checked + span { color: #d6336c; font-weight: bold; }
+  .meal-options label:has(input:checked) { background: #ffd6e8; transform: scale(1.05); }
+
+  button {
+    width: 100%;
+    margin-top: 25px;
+    font-family: inherit;
+    font-size: 1.1rem;
+    padding: 12px;
+    border: none;
+    border-radius: 50px;
+    background: #ff8fb3;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    transition: transform 0.2s;
+  }
+  button:hover { transform: scale(1.05); }
+
+  #confirmMsg { text-align: center; margin-top: 20px; font-size: 1.2rem; color: #d6336c; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <h1>SO...WHEN ARE WE GOING? 💕</h1>
+
+    <form id="choiceForm">
+      <label for="dateInput">📅 Date</label>
+      <input type="date" id="dateInput" required>
+
+      <label for="timeInput">⏰ Time</label>
+      <input type="time" id="timeInput" required>
+
+      <label for="locationInput">📍 Location</label>
+      <input type="text" id="locationInput" placeholder="Where should we go?" required>
+
+      <label>🍴 What are we having?</label>
+      <div class="meal-options">
+        <label><input type="radio" name="meal" value="Lunch" checked><span>🥗 Lunch</span></label>
+        <label><input type="radio" name="meal" value="Snacks"><span>🍿 Snacks</span></label>
+        <label><input type="radio" name="meal" value="Dinner"><span>🍝 Dinner</span></label>
+      </div>
+
+      <button type="submit">CONFIRM</button>
+    </form>
+
+    <p id="confirmMsg" class="hidden" style="display:none;"></p>
+  </main>
+
+  <!-- Cute bear popup -->
+  <div id="bearModal" style="display:none; position:fixed; inset:0; background:rgba(120,70,120,0.5); align-items:center; justify-content:center; z-index:100;">
+    <div style="background:white; border-radius:20px; padding:30px; text-align:center; max-width:90%; box-shadow:0 10px 40px rgba(0,0,0,0.3); animation:pop 0.5s ease;">
+      <video id="bearVideo" src="VIDEO 1.mp4" autoplay loop muted playsinline style="max-width:280px; width:100%; border-radius:15px; cursor:pointer;"></video>
+      <p id="flowerMsg" style="margin-bottom:15px; cursor:pointer;">flowers for you cutiepie 💐</p>
+      <button id="closeBear" style="width:auto; padding:10px 25px; margin-top:0;">AWW 🥰</button>
+    </div>
+  </div>
+  <style>@keyframes pop { 0%{transform:scale(0.5);} 70%{transform:scale(1.1);} 100%{transform:scale(1);} }</style>
+
+<script>
+  // Show a cute confirmation instead of submitting anywhere
+  document.getElementById('choiceForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const meal = document.querySelector('input[name="meal"]:checked').value;
+    const msg = document.getElementById('confirmMsg');
+    msg.style.display = 'block';
+    msg.textContent = `flowers for you cutiepie 💐`;
+    document.getElementById('bearModal').style.display = 'flex'; // show bear popup
+  });
+
+  document.getElementById('closeBear').addEventListener('click', () => {
+    document.getElementById('bearModal').style.display = 'none';
+  });
+
+  // Interactive: clicking the video or message makes flowers burst and bounce the text
+  function flowerBurst() {
+    const msg = document.getElementById('flowerMsg');
+    msg.style.animation = 'none';
+    void msg.offsetWidth; // restart animation
+    msg.style.animation = 'pop 0.5s ease';
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => {
+        const f = document.createElement('div');
+        f.textContent = ['💐','🌸','🌷','🌹','🌼','💖'][Math.floor(Math.random()*6)];
+        f.style.cssText = `position:fixed; top:-30px; left:${Math.random()*100}vw; font-size:1.5rem; pointer-events:none; z-index:200; animation:fall ${2+Math.random()*2}s linear forwards;`;
+        document.body.appendChild(f);
+        setTimeout(() => f.remove(), 4500);
+      }, i * 60);
+    }
+  }
+  document.getElementById('bearVideo').addEventListener('click', flowerBurst);
+  document.getElementById('flowerMsg').addEventListener('click', flowerBurst);
+
+  /* ===== Background music using music 1.mp4 (no autoplay) ===== */
+  const music = new Audio('music 1.mp4');
+  music.loop = true;
+  let musicPlaying = false;
+  const musicBtn = document.createElement('button');
+  musicBtn.textContent = '🔇';
+  musicBtn.title = 'Toggle music';
+  musicBtn.style.cssText = 'position:fixed; top:15px; right:15px; width:48px; height:48px; border-radius:50%; font-size:1.3rem; padding:0; z-index:50; margin:0;';
+  document.body.appendChild(musicBtn);
+  musicBtn.addEventListener('click', () => {
+    musicPlaying = !musicPlaying;
+    if (musicPlaying) { music.play(); musicBtn.textContent = '🔊'; }
+    else { music.pause(); musicBtn.textContent = '🔇'; }
+  });
+
+  /* ===== flower fall animation ===== */
+const s = document.createElement('style');
+s.textContent = '@keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }';
+document.head.appendChild(s);
+</script>
+</body>
+</html>

@@ -1,375 +1,408 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Will You Go on a Date With Me?</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Would You Like to Go Out With Me?</title>
 <style>
-  /* ---------- Base styles & variables ---------- */
-  :root {
-    --pink: #ffd6e8;
-    --pink-deep: #ff9ecb;
-    --lavender: #e6dcf7;
-    --blue: #d6ecff;
-    --white: #fffafc;
-    --text: #6b4b5e;
-    --shadow: 0 10px 40px rgba(255, 158, 203, 0.35);
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Comic Sans MS", "Segoe UI", "Quicksand", cursive, sans-serif;
-  }
+  /* ===== Base styles ===== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     min-height: 100vh;
-    /* Soft romantic gradient background */
-    background: linear-gradient(135deg, var(--pink) 0%, var(--lavender) 50%, var(--blue) 100%);
+    font-family: 'Georgia', 'Segoe UI', serif;
+    background: linear-gradient(135deg, #ffd6e8 0%, #e6d6ff 50%, #d6e9ff 100%);
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow-x: hidden;
-    color: var(--text);
+    color: #6b4a6b;
     padding: 20px;
   }
 
-  /* ---------- Floating hearts & sparkles ---------- */
+  /* ===== Floating hearts background ===== */
   .heart {
     position: fixed;
-    bottom: -10vh;
+    bottom: -50px;
     font-size: 1.5rem;
-    opacity: 0.7;
     animation: floatUp linear infinite;
+    opacity: 0.6;
     pointer-events: none;
     z-index: 0;
   }
-
   @keyframes floatUp {
-    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
-    10%  { opacity: 0.8; }
-    100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+    100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
   }
 
-  .sparkle {
-    position: fixed;
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-    box-shadow: 0 0 8px white;
-    animation: twinkle 2.5s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.2; transform: scale(0.6); }
-    50%      { opacity: 1;   transform: scale(1.4); }
-  }
-
-  /* ---------- Main card ---------- */
+  /* ===== Card ===== */
   .card {
-    position: relative;
-    z-index: 2;
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(8px);
     border-radius: 24px;
-    box-shadow: var(--shadow);
     padding: 40px 30px;
     max-width: 480px;
     width: 100%;
     text-align: center;
-    animation: cardIn 1s ease;
+    box-shadow: 0 10px 40px rgba(180, 120, 180, 0.25);
+    z-index: 1;
+    animation: fadeIn 1s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(30px) scale(0.95); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
+  h1 { font-size: 1.8rem; margin-bottom: 15px; color: #d6336c; }
+  p  { font-size: 1.15rem; margin: 10px 0; line-height: 1.6; }
 
-  h1 { font-size: 1.8rem; margin-bottom: 16px; min-height: 2.2rem; }
-  #intro { font-size: 1.05rem; margin-bottom: 18px; opacity: 0; transition: opacity 0.8s; }
-  #question { font-size: 1.4rem; font-weight: bold; margin-bottom: 26px; opacity: 0; transition: opacity 0.8s; }
+  /* ===== Typewriter cursor ===== */
+  .cursor::after { content: '|'; animation: blink 0.8s infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
 
-  .visible { opacity: 1 !important; }
-
-  /* ---------- Buttons ---------- */
-  .buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; min-height: 60px; }
+  /* ===== Buttons ===== */
+  .btn-group { margin-top: 25px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 
   button {
-    border: none;
-    border-radius: 999px;
-    padding: 14px 32px;
+    font-family: inherit;
     font-size: 1.1rem;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 50px;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s;
-    box-shadow: 0 4px 14px rgba(255, 158, 203, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
   }
-
   button:hover { transform: scale(1.08); }
 
-  #yesBtn { background: var(--pink-deep); color: white; }
-  #noBtn  { background: white; color: var(--text); border: 2px solid var(--pink); }
+  #yesBtn { background: #ff8fb3; color: white; }
+  #noBtn  { background: #c9b8f0; color: white; position: relative; }
 
-  /* ---------- Celebration overlay / modal ---------- */
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(255, 182, 213, 0.45);
-    backdrop-filter: blur(4px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    padding: 20px;
-  }
+  .hidden { display: none !important; }
 
-  .overlay.show { display: flex; animation: fadeIn 0.5s ease; }
-
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .modal {
-    background: var(--white);
-    border-radius: 24px;
-    padding: 36px 28px;
-    max-width: 440px;
-    width: 100%;
-    text-align: center;
-    box-shadow: var(--shadow);
-    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  @keyframes popIn {
-    from { transform: scale(0.6); opacity: 0; }
-    to   { transform: scale(1); opacity: 1; }
-  }
-
-  .modal h2 { font-size: 1.7rem; margin-bottom: 14px; }
-  .modal p  { margin-bottom: 10px; font-size: 1.05rem; }
-
-  /* ---------- Date planning section ---------- */
-  #datePlan { display: none; margin-top: 18px; background: var(--lavender); border-radius: 16px; padding: 16px; }
-  #datePlan p { margin: 6px 0; }
-
-  /* ---------- Confetti ---------- */
+  /* ===== Confetti ===== */
   .confetti {
     position: fixed;
-    top: -10vh;
+    top: -20px;
+    font-size: 1.4rem;
+    animation: fall linear forwards;
     pointer-events: none;
-    z-index: 20;
-    animation: confettiFall linear forwards;
+    z-index: 999;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
   }
 
-  @keyframes confettiFall {
-    to { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+  /* ===== Date planning section ===== */
+  .date-plan { margin-top: 20px; text-align: left; }
+  .date-plan label { display: block; margin: 12px 0 4px; font-weight: bold; color: #a04a7a; }
+  .date-plan input, .date-plan select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ffd6e8;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1rem;
+    background: #fff;
+    color: #6b4a6b;
   }
+  .date-plan input:focus, .date-plan select:focus { outline: none; border-color: #ff8fb3; }
 
-  /* ---------- Footer & music button ---------- */
   footer {
-    position: fixed;
-    bottom: 10px;
-    font-size: 0.85rem;
-    color: var(--text);
-    opacity: 0.8;
-    z-index: 2;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: #a07aa0;
+    z-index: 1;
   }
 
+  /* ===== Music toggle ===== */
   #musicBtn {
     position: fixed;
-    top: 14px;
-    right: 14px;
-    z-index: 5;
-    padding: 10px 16px;
-    font-size: 0.9rem;
-    background: rgba(255, 255, 255, 0.8);
-    color: var(--text);
+    top: 15px;
+    right: 15px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+    padding: 0;
+    z-index: 10;
   }
 
-  #noMessage { margin-top: 18px; font-weight: bold; min-height: 1.4rem; }
+  /* ===== Popup photo modal ===== */
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(120, 70, 120, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.5s ease;
+  }
+  .modal-box {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    max-width: 90%;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    animation: pop 0.5s ease;
+  }
+  @keyframes pop {
+    0%   { transform: scale(0.5); }
+    70%  { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  .modal-box img {
+    max-width: 300px;
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 15px;
+  }
+  .modal-box h2 { color: #d6336c; margin-bottom: 15px; }
+
+  /* ===== Choice page (merged into one page) ===== */
+  #choicePage label { display: block; margin: 15px 0 5px; font-weight: bold; color: #a04a7a; }
+  #choicePage input[type="date"], #choicePage input[type="time"], #choicePage input[type="text"] {
+    width: 100%; padding: 10px; border: 2px solid #ffd6e8; border-radius: 12px;
+    font-family: inherit; font-size: 1rem; background: #fff; color: #6b4a6b;
+  }
+  #choicePage input:focus { outline: none; border-color: #ff8fb3; }
+  .meal-options { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .meal-options label {
+    flex: 1; min-width: 100px; text-align: center; background: #f3e8ff; border-radius: 50px;
+    padding: 10px; cursor: pointer; font-weight: normal; margin: 0; transition: transform 0.2s, background 0.2s;
+  }
+  .meal-options input { display: none; }
+  .meal-options label:has(input:checked) { background: #ffd6e8; transform: scale(1.05); color: #d6336c; font-weight: bold; }
+  #confirmMsg { text-align: center; margin-top: 20px; font-size: 1.2rem; color: #d6336c; }
+  #bearModal {
+    position: fixed; inset: 0; background: rgba(120,70,120,0.5); display: flex;
+    align-items: center; justify-content: center; z-index: 100;
+  }
+  #bearModal .modal-box { animation: pop 0.5s ease; }
 
   @media (max-width: 480px) {
-    .card { padding: 28px 18px; }
-    h1 { font-size: 1.4rem; }
-    #question { font-size: 1.15rem; }
-    button { padding: 12px 26px; font-size: 1rem; }
+    h1 { font-size: 1.5rem; }
+    .card { padding: 30px 20px; }
   }
 </style>
 </head>
 <body>
 
-  <!-- Background music toggle (does NOT autoplay) -->
-  <button id="musicBtn" aria-label="Toggle background music">🎵 Music: Off</button>
+  <!-- Music toggle (no autoplay) -->
+  <button id="musicBtn" title="Toggle music">🔇</button>
 
-  <main class="card" id="mainCard">
+  <main class="card" id="card">
     <h1 id="greeting"></h1>
-    <p id="intro">I have a little question for you…</p>
-    <p id="question">Would you go on a date with me? 🥺👉👈</p>
+    <p id="line1"></p>
+    <p id="question" class="hidden">Would you like to go out with me? 🥺👉👈<br>Miss na kita eh</p>
 
-    <div class="buttons">
+    <div class="btn-group" id="mainButtons">
       <button id="yesBtn">💗 YES!</button>
       <button id="noBtn">🥺 NO</button>
     </div>
 
-    <p id="noMessage"></p>
+    <!-- Shown after YES -->
+    <section id="yesSection" class="hidden">
+      <p style="font-size:1.6rem; font-weight:bold; color:#d6336c;">Yehey! B2 is happy 🥹❤️</p>
+      <button id="planBtn" style="margin-top:15px; background:#a8d8ff; color:#4a4a6b;">CONTINUE</button>
+
+    </section>
+
+    <p id="noMessage" class="hidden" style="margin-top:20px; color:#a04a7a;">Okay okay… I’ll respect your answer. 🥹💗</p>
   </main>
 
-  <!-- Celebration modal shown after YES -->
-  <div class="overlay" id="overlay">
-    <div class="modal" role="dialog" aria-modal="true">
-      <h2>YAY! You said YES! 🥹❤️</h2>
-      <p>I’m really looking forward to spending time with you. 💕</p>
-      <p>It’s a date! 🥰</p>
-      <button id="planBtn">Choose Our Date 💌</button>
-
-      <section id="datePlan" aria-label="Date planning">
-        <p>📅 Date: Friday, October 16</p>
-        <p>⏰ Time: 7:00 PM</p>
-        <p>📍 Location: The Cozy Corner Café</p>
-        <p>🍽️ Activity: Dinner & Dessert</p>
-      </section>
+  <!-- Popup photo shown after pressing YES -->
+  <div class="modal hidden" id="photoModal">
+    <div class="modal-box">
+      <h2>YEHEY! B2 IS VERY HAPPY! 🥹❤️</h2>
+      <img src="Picture 1.jpg" alt="B2 is very happy">
+      <br>
+      <button id="closeModal" style="background:#ff8fb3; color:white;">CONTINUE 💕</button>
     </div>
   </div>
 
-  <footer>Made with ❤️ for <span class="name"></span></footer>
+  <!-- Choice "page" (second step of the same page) -->
+  <main class="card hidden" id="choicePage">
+    <h1>SO...WHEN ARE WE GOING? 💕</h1>
+    <form id="choiceForm" style="text-align:left;">
+      <label for="dateInput">📅 Date</label>
+      <input type="date" id="dateInput" required>
+      <label for="timeInput">⏰ Time</label>
+      <input type="time" id="timeInput" required>
+      <label for="locationInput">📍 Location</label>
+      <input type="text" id="locationInput" placeholder="Where should we go?" required>
+      <label>🍴 What are we having?</label>
+      <div class="meal-options">
+        <label><input type="radio" name="meal" value="Lunch" checked>🥗 Lunch</label>
+        <label><input type="radio" name="meal" value="Snacks">🍿 Snacks</label>
+        <label><input type="radio" name="meal" value="Dinner">🍝 Dinner</label>
+      </div>
+      <button type="submit" style="width:100%; margin-top:25px; background:#ff8fb3; color:white;">CONFIRM</button>
+    </form>
+    <p id="confirmMsg" style="display:none;"></p>
+  </main>
+
+  <!-- Bear popup -->
+  <div id="bearModal" class="hidden">
+    <div class="modal-box">
+      <video id="bearVideo" src="Video 1.mp4" autoplay loop muted playsinline style="max-width:280px; width:100%; border-radius:15px; cursor:pointer;"></video>
+      <p id="flowerMsg" style="margin-bottom:15px; cursor:pointer;">flowers for you cutiepie 💐</p>
+      <button id="closeBear" style="background:#ff8fb3; color:white;">AWW 🥰</button>
+    </div>
+  </div>
 
 <script>
-  /* ---------- Customize the name here ---------- */
-  const NAME = "[NAME]";
+  /* ===== Typewriter animation for the opening messages ===== */
+  const NAME = "YAN"; // ✏️ Change this to the person's name!
 
-  /* ---------- Populate name everywhere ---------- */
-  document.querySelectorAll(".name").forEach(el => (el.textContent = NAME));
+  const greetingEl = document.getElementById('greeting');
+  const line1El = document.getElementById('line1');
+  const questionEl = document.getElementById('question');
 
-  /* ---------- Typewriter animation for the greeting ---------- */
-  const greetingEl = document.getElementById("greeting");
-  const fullText = `Hey, ${NAME} 💗`;
-  let i = 0;
-  const typing = setInterval(() => {
-    greetingEl.textContent += fullText[i++];
-    if (i >= fullText.length) {
-      clearInterval(typing);
-      // Reveal intro, then the big question, one after another
-      document.getElementById("intro").classList.add("visible");
-      setTimeout(() => document.getElementById("question").classList.add("visible"), 1200);
-    }
-  }, 90);
+  function typeText(el, text, speed, callback) {
+    el.classList.add('cursor');
+    let i = 0;
+    const interval = setInterval(() => {
+      el.textContent += text[i++];
+      if (i >= text.length) {
+        clearInterval(interval);
+        el.classList.remove('cursor');
+        if (callback) callback();
+      }
+    }, speed);
+  }
 
-  /* ---------- Floating hearts in the background ---------- */
-  const heartEmojis = ["💗", "💖", "💕", "💓", "🌸", "💝"];
+  // Sequenced typewriter: greeting → line → question + buttons
+  typeText(greetingEl, `HI, ${NAME} 😄`, 80, () => {
+    setTimeout(() => {
+      typeText(line1El, "I have a little question for you…", 60, () => {
+        setTimeout(() => {
+          questionEl.classList.remove('hidden');
+          questionEl.style.animation = 'fadeIn 1s ease';
+          document.getElementById('mainButtons').classList.remove('hidden');
+        }, 600);
+      });
+    }, 500);
+  });
+
+  /* ===== Floating hearts in the background ===== */
+  const hearts = ['💗','💕','💖','🌸','✨','🤍'];
   setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 1.5 + 0.8) + "rem";
-    heart.style.animationDuration = (Math.random() * 5 + 6) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 12000);
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.animationDuration = (6 + Math.random() * 6) + 's';
+    h.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 13000);
   }, 600);
 
-  /* ---------- Sparkles ---------- */
-  for (let s = 0; s < 25; s++) {
-    const sparkle = document.createElement("div");
-    sparkle.className = "sparkle";
-    sparkle.style.left = Math.random() * 100 + "vw";
-    sparkle.style.top = Math.random() * 100 + "vh";
-    sparkle.style.animationDelay = Math.random() * 3 + "s";
-    document.body.appendChild(sparkle);
-  }
-
-  /* ---------- YES button: celebration + modal ---------- */
-  document.getElementById("yesBtn").addEventListener("click", () => {
-    document.getElementById("overlay").classList.add("show");
-    confettiBurst();
-  });
-
-  /* ---------- "Choose Our Date" reveals the plan ---------- */
-  document.getElementById("planBtn").addEventListener("click", () => {
-    document.getElementById("datePlan").style.display = "block";
-  });
-
-  /* ---------- Confetti effect (pure DOM, no libraries) ---------- */
-  function confettiBurst() {
-    const pieces = ["💗", "💖", "🎉", "✨", "🌸", "💕", "⭐"];
-    for (let c = 0; c < 60; c++) {
-      const piece = document.createElement("div");
-      piece.className = "confetti";
-      piece.textContent = pieces[Math.floor(Math.random() * pieces.length)];
-      piece.style.left = Math.random() * 100 + "vw";
-      piece.style.fontSize = (Math.random() * 1.2 + 0.8) + "rem";
-      piece.style.animationDuration = (Math.random() * 2 + 2.5) + "s";
-      document.body.appendChild(piece);
-      setTimeout(() => piece.remove(), 5000);
-    }
-  }
-
-  /* ---------- NO button: playful escape + changing text ---------- */
-  const noBtn = document.getElementById("noBtn");
-  const noMessages = ["Are you sure? 🥺", "Think again! 😭", "Please? 🥹", "Give me a chance! 💗", "Really? 😭"];
+  /* ===== NO button: playful dodging ===== */
+  const noBtn = document.getElementById('noBtn');
+  const noTexts = ["Are you sure? 🥺", "Think again! 😭", "Please? 🥹", "Give me a chance! 💗", "Really? 😭"];
   let noAttempts = 0;
 
-  function dodgeNo(event) {
-    // After a few dodges, let it be clickable and give a sweet message
+  function dodgeNo() {
     noAttempts++;
-    if (noAttempts > 4) {
-      document.getElementById("noMessage").textContent = "Okay okay… I’ll respect your answer. 🥹💗";
-      noBtn.textContent = "😢 NO";
-      noBtn.style.position = "static";
-      noBtn.replaceWith(noBtn.cloneNode(true)); // remove dodge listeners so it's clickable now
-      return;
+    // Move the button to a random spot on screen
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = Math.random() * (window.innerWidth - 120) + 'px';
+    noBtn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
+    noBtn.textContent = noTexts[Math.floor(Math.random() * noTexts.length)];
+
+    // After 5 attempts, give up gracefully
+    if (noAttempts >= 5) {
+      noBtn.classList.add('hidden');
+      document.getElementById('noMessage').classList.remove('hidden');
     }
+  }
+  noBtn.addEventListener('mouseover', dodgeNo);
+  noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeNo(); });
+  noBtn.addEventListener('click', dodgeNo);
 
-    // Change text to a random playful plea
-    noBtn.textContent = noMessages[Math.floor(Math.random() * noMessages.length)];
+  /* ===== YES button: celebration! ===== */
+  document.getElementById('yesBtn').addEventListener('click', () => {
+    document.getElementById('mainButtons').classList.add('hidden');
+    questionEl.classList.add('hidden');
+    document.getElementById('yesSection').classList.remove('hidden');
+    document.getElementById('photoModal').classList.remove('hidden'); // POP! photo
 
-    // Move the button to a random visible spot (keeping it inside the viewport)
-    const padding = 20;
-    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
-    noBtn.style.position = "fixed";
-    noBtn.style.left = Math.max(padding, Math.random() * maxX) + "px";
-    noBtn.style.top = Math.max(padding, Math.random() * maxY) + "px";
-    noBtn.style.zIndex = 30;
+    // Confetti burst
+    const confetti = ['💖','🎉','💕','🌸','✨','💗','🎊'];
+    for (let i = 0; i < 40; i++) {
+      setTimeout(() => {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.textContent = confetti[Math.floor(Math.random() * confetti.length)];
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.animationDuration = (2 + Math.random() * 2) + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4500);
+      }, i * 80);
+    }
+  });
 
-    if (event) event.preventDefault();
+  // Switch from the first "page" to the choice page (one single file now)
+  function showChoicePage() {
+    document.getElementById('card').classList.add('hidden');
+    document.getElementById('photoModal').classList.add('hidden');
+    const choice = document.getElementById('choicePage');
+    choice.classList.remove('hidden');
+    choice.style.animation = 'fadeIn 1s ease';
   }
 
-  // Dodge on hover (desktop) and on touch/click (mobile)
-  noBtn.addEventListener("mouseover", dodgeNo);
-  noBtn.addEventListener("touchstart", dodgeNo, { passive: false });
-  noBtn.addEventListener("click", dodgeNo);
+  document.getElementById('closeModal').addEventListener('click', showChoicePage);
+  document.getElementById('planBtn').addEventListener('click', showChoicePage);
 
-  /* ---------- Optional background music (off by default, Web Audio, no files) ---------- */
-  let audioCtx = null;
-  let musicOn = false;
-  let musicInterval = null;
+  /* ===== Choice form: show bear popup ===== */
+  document.getElementById('choiceForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = document.getElementById('confirmMsg');
+    msg.style.display = 'block';
+    msg.textContent = "flowers for you cutiepie 💐";
+    document.getElementById('bearModal').classList.remove('hidden');
+  });
 
-  // A tiny sweet melody generated with the Web Audio API
-  const melody = [523, 587, 659, 784, 659, 587]; // C D E G E D
+  document.getElementById('closeBear').addEventListener('click', () => {
+    document.getElementById('bearModal').classList.add('hidden');
+  });
 
-  document.getElementById("musicBtn").addEventListener("click", (e) => {
-    musicOn = !musicOn;
-    e.target.textContent = musicOn ? "🎵 Music: On" : "🎵 Music: Off";
+  // Interactive: clicking the video or message makes flowers burst
+  function flowerBurst() {
+    const msg = document.getElementById('flowerMsg');
+    msg.style.animation = 'none';
+    void msg.offsetWidth;
+    msg.style.animation = 'pop 0.5s ease';
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => {
+        const f = document.createElement('div');
+        f.textContent = ['💐','🌸','🌷','🌹','🌼','💖'][Math.floor(Math.random()*6)];
+        f.style.cssText = 'position:fixed; top:-30px; left:' + (Math.random()*100) + 'vw; font-size:1.5rem; pointer-events:none; z-index:200; animation:fall ' + (2+Math.random()*2) + 's linear forwards;';
+        document.body.appendChild(f);
+        setTimeout(() => f.remove(), 4500);
+      }, i * 60);
+    }
+  }
+  document.getElementById('bearVideo').addEventListener('click', flowerBurst);
+  document.getElementById('flowerMsg').addEventListener('click', flowerBurst);
 
-    if (musicOn) {
-      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-      let n = 0;
-      musicInterval = setInterval(() => {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = "sine";
-        osc.frequency.value = melody[n % melody.length];
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-        osc.connect(gain).connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.4);
-        n++;
-      }, 450);
+  /* ===== Background music using music 1.mp4 (no autoplay) ===== */
+  const music = new Audio('music 1.mp4');
+  music.loop = true;
+  let musicPlaying = false;
+  document.getElementById('musicBtn').addEventListener('click', function () {
+    musicPlaying = !musicPlaying;
+    if (musicPlaying) {
+      music.play();
+      this.textContent = '🔊';
     } else {
-      clearInterval(musicInterval);
+      music.pause();
+      this.textContent = '🔇';
     }
   });
 </script>
