@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Will You Go on a Date With Me?</title>
+<style>
+  /* ---------- Base styles & variables ---------- */
+  :root {
+    --pink: #ffd6e8;
+    --pink-deep: #ff9ecb;
+    --lavender: #e6dcf7;
+    --blue: #d6ecff;
+    --white: #fffafc;
+    --text: #6b4b5e;
+    --shadow: 0 10px 40px rgba(255, 158, 203, 0.35);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Comic Sans MS", "Segoe UI", "Quicksand", cursive, sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    /* Soft romantic gradient background */
+    background: linear-gradient(135deg, var(--pink) 0%, var(--lavender) 50%, var(--blue) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    color: var(--text);
+    padding: 20px;
+  }
+
+  /* ---------- Floating hearts & sparkles ---------- */
+  .heart {
+    position: fixed;
+    bottom: -10vh;
+    font-size: 1.5rem;
+    opacity: 0.7;
+    animation: floatUp linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes floatUp {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.8; }
+    100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+  }
+
+  .sparkle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 8px white;
+    animation: twinkle 2.5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.6); }
+    50%      { opacity: 1;   transform: scale(1.4); }
+  }
+
+  /* ---------- Main card ---------- */
+  .card {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    padding: 40px 30px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    animation: cardIn 1s ease;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  h1 { font-size: 1.8rem; margin-bottom: 16px; min-height: 2.2rem; }
+  #intro { font-size: 1.05rem; margin-bottom: 18px; opacity: 0; transition: opacity 0.8s; }
+  #question { font-size: 1.4rem; font-weight: bold; margin-bottom: 26px; opacity: 0; transition: opacity 0.8s; }
+
+  .visible { opacity: 1 !important; }
+
+  /* ---------- Buttons ---------- */
+  .buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; min-height: 60px; }
+
+  button {
+    border: none;
+    border-radius: 999px;
+    padding: 14px 32px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s;
+    box-shadow: 0 4px 14px rgba(255, 158, 203, 0.5);
+  }
+
+  button:hover { transform: scale(1.08); }
+
+  #yesBtn { background: var(--pink-deep); color: white; }
+  #noBtn  { background: white; color: var(--text); border: 2px solid var(--pink); }
+
+  /* ---------- Celebration overlay / modal ---------- */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 182, 213, 0.45);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 20px;
+  }
+
+  .overlay.show { display: flex; animation: fadeIn 0.5s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 36px 28px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    box-shadow: var(--shadow);
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.6); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  .modal h2 { font-size: 1.7rem; margin-bottom: 14px; }
+  .modal p  { margin-bottom: 10px; font-size: 1.05rem; }
+
+  /* ---------- Date planning section ---------- */
+  #datePlan { display: none; margin-top: 18px; background: var(--lavender); border-radius: 16px; padding: 16px; }
+  #datePlan p { margin: 6px 0; }
+
+  /* ---------- Confetti ---------- */
+  .confetti {
+    position: fixed;
+    top: -10vh;
+    pointer-events: none;
+    z-index: 20;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    to { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ---------- Footer & music button ---------- */
+  footer {
+    position: fixed;
+    bottom: 10px;
+    font-size: 0.85rem;
+    color: var(--text);
+    opacity: 0.8;
+    z-index: 2;
+  }
+
+  #musicBtn {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--text);
+  }
+
+  #noMessage { margin-top: 18px; font-weight: bold; min-height: 1.4rem; }
+
+  @media (max-width: 480px) {
+    .card { padding: 28px 18px; }
+    h1 { font-size: 1.4rem; }
+    #question { font-size: 1.15rem; }
+    button { padding: 12px 26px; font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Background music toggle (does NOT autoplay) -->
+  <button id="musicBtn" aria-label="Toggle background music">🎵 Music: Off</button>
+
+  <main class="card" id="mainCard">
+    <h1 id="greeting"></h1>
+    <p id="intro">I have a little question for you…</p>
+    <p id="question">Would you go on a date with me? 🥺👉👈</p>
+
+    <div class="buttons">
+      <button id="yesBtn">💗 YES!</button>
+      <button id="noBtn">🥺 NO</button>
+    </div>
+
+    <p id="noMessage"></p>
+  </main>
+
+  <!-- Celebration modal shown after YES -->
+  <div class="overlay" id="overlay">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h2>YAY! You said YES! 🥹❤️</h2>
+      <p>I’m really looking forward to spending time with you. 💕</p>
+      <p>It’s a date! 🥰</p>
+      <button id="planBtn">Choose Our Date 💌</button>
+
+      <section id="datePlan" aria-label="Date planning">
+        <p>📅 Date: Friday, October 16</p>
+        <p>⏰ Time: 7:00 PM</p>
+        <p>📍 Location: The Cozy Corner Café</p>
+        <p>🍽️ Activity: Dinner & Dessert</p>
+      </section>
+    </div>
+  </div>
+
+  <footer>Made with ❤️ for <span class="name"></span></footer>
+
+<script>
+  /* ---------- Customize the name here ---------- */
+  const NAME = "[NAME]";
+
+  /* ---------- Populate name everywhere ---------- */
+  document.querySelectorAll(".name").forEach(el => (el.textContent = NAME));
+
+  /* ---------- Typewriter animation for the greeting ---------- */
+  const greetingEl = document.getElementById("greeting");
+  const fullText = `Hey, ${NAME} 💗`;
+  let i = 0;
+  const typing = setInterval(() => {
+    greetingEl.textContent += fullText[i++];
+    if (i >= fullText.length) {
+      clearInterval(typing);
+      // Reveal intro, then the big question, one after another
+      document.getElementById("intro").classList.add("visible");
+      setTimeout(() => document.getElementById("question").classList.add("visible"), 1200);
+    }
+  }, 90);
+
+  /* ---------- Floating hearts in the background ---------- */
+  const heartEmojis = ["💗", "💖", "💕", "💓", "🌸", "💝"];
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 1.5 + 0.8) + "rem";
+    heart.style.animationDuration = (Math.random() * 5 + 6) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 12000);
+  }, 600);
+
+  /* ---------- Sparkles ---------- */
+  for (let s = 0; s < 25; s++) {
+    const sparkle = document.createElement("div");
+    sparkle.className = "sparkle";
+    sparkle.style.left = Math.random() * 100 + "vw";
+    sparkle.style.top = Math.random() * 100 + "vh";
+    sparkle.style.animationDelay = Math.random() * 3 + "s";
+    document.body.appendChild(sparkle);
+  }
+
+  /* ---------- YES button: celebration + modal ---------- */
+  document.getElementById("yesBtn").addEventListener("click", () => {
+    document.getElementById("overlay").classList.add("show");
+    confettiBurst();
+  });
+
+  /* ---------- "Choose Our Date" reveals the plan ---------- */
+  document.getElementById("planBtn").addEventListener("click", () => {
+    document.getElementById("datePlan").style.display = "block";
+  });
+
+  /* ---------- Confetti effect (pure DOM, no libraries) ---------- */
+  function confettiBurst() {
+    const pieces = ["💗", "💖", "🎉", "✨", "🌸", "💕", "⭐"];
+    for (let c = 0; c < 60; c++) {
+      const piece = document.createElement("div");
+      piece.className = "confetti";
+      piece.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+      piece.style.left = Math.random() * 100 + "vw";
+      piece.style.fontSize = (Math.random() * 1.2 + 0.8) + "rem";
+      piece.style.animationDuration = (Math.random() * 2 + 2.5) + "s";
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 5000);
+    }
+  }
+
+  /* ---------- NO button: playful escape + changing text ---------- */
+  const noBtn = document.getElementById("noBtn");
+  const noMessages = ["Are you sure? 🥺", "Think again! 😭", "Please? 🥹", "Give me a chance! 💗", "Really? 😭"];
+  let noAttempts = 0;
+
+  function dodgeNo(event) {
+    // After a few dodges, let it be clickable and give a sweet message
+    noAttempts++;
+    if (noAttempts > 4) {
+      document.getElementById("noMessage").textContent = "Okay okay… I’ll respect your answer. 🥹💗";
+      noBtn.textContent = "😢 NO";
+      noBtn.style.position = "static";
+      noBtn.replaceWith(noBtn.cloneNode(true)); // remove dodge listeners so it's clickable now
+      return;
+    }
+
+    // Change text to a random playful plea
+    noBtn.textContent = noMessages[Math.floor(Math.random() * noMessages.length)];
+
+    // Move the button to a random visible spot (keeping it inside the viewport)
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+    noBtn.style.position = "fixed";
+    noBtn.style.left = Math.max(padding, Math.random() * maxX) + "px";
+    noBtn.style.top = Math.max(padding, Math.random() * maxY) + "px";
+    noBtn.style.zIndex = 30;
+
+    if (event) event.preventDefault();
+  }
+
+  // Dodge on hover (desktop) and on touch/click (mobile)
+  noBtn.addEventListener("mouseover", dodgeNo);
+  noBtn.addEventListener("touchstart", dodgeNo, { passive: false });
+  noBtn.addEventListener("click", dodgeNo);
+
+  /* ---------- Optional background music (off by default, Web Audio, no files) ---------- */
+  let audioCtx = null;
+  let musicOn = false;
+  let musicInterval = null;
+
+  // A tiny sweet melody generated with the Web Audio API
+  const melody = [523, 587, 659, 784, 659, 587]; // C D E G E D
+
+  document.getElementById("musicBtn").addEventListener("click", (e) => {
+    musicOn = !musicOn;
+    e.target.textContent = musicOn ? "🎵 Music: On" : "🎵 Music: Off";
+
+    if (musicOn) {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      let n = 0;
+      musicInterval = setInterval(() => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = melody[n % melody.length];
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.4);
+        n++;
+      }, 450);
+    } else {
+      clearInterval(musicInterval);
+    }
+  });
+</script>
+</body>
+</html>
